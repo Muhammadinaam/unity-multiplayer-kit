@@ -1,20 +1,3 @@
-// ============================================================
-// GameState  –  Server-controlled game state synced to all clients
-// ============================================================
-// SETUP
-//   1. Create an empty GameObject in your persistent scene,
-//      add NetworkObject + this component to it.
-//   2. Optionally set DontDestroyOnLoad on it so it persists
-//      through scene loads (tick it on the NetworkObject component).
-//
-// USAGE
-//   GameState.Instance.SetPhase(GamePhase.InGame);   // server only
-//   GameState.Instance.Phase.Value                   // read anywhere
-//   GameState.Instance.Phase.OnValueChanged += ...   // subscribe in UI
-//
-// Add more NetworkVariables below as your game needs them.
-// ============================================================
-
 using Unity.Netcode;
 using UnityEngine;
 

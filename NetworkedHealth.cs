@@ -1,27 +1,3 @@
-// ============================================================
-// NetworkedHealth  –  Synced health for players and NPCs
-// ============================================================
-// SETUP
-//   Attach to any Player or NPC prefab with a NetworkObject.
-//   Server owns all damage/healing logic.
-//   Any client can REQUEST damage via TakeDamageServerRpc.
-//
-// USAGE
-//   // Deal damage (call from any client or server):
-//   health.TakeDamageServerRpc(25);
-//
-//   // Heal (server only):
-//   health.Heal(10);
-//
-//   // Subscribe in UI or game logic:
-//   health.OnHealthChanged += (current, max) => UpdateHealthBar(current, max);
-//   health.OnDied          += HandleDeath;
-//
-//   // Check state:
-//   health.IsDead
-//   health.CurrentHealth.Value
-// ============================================================
-
 using System;
 using Unity.Netcode;
 using UnityEngine;

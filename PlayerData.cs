@@ -1,24 +1,3 @@
-// ============================================================
-// PlayerData  –  Per-player synced data
-// ============================================================
-// SETUP
-//   Add to any Player or NPC prefab alongside NetworkObject.
-//   Server sets PlayerNumber automatically via GameNetworkManager.
-//   Owner sets their own name (loaded from PlayerPrefs) and ready state.
-//
-// USAGE  (from UI scripts)
-//   var data = GetComponent<PlayerData>();
-//   data.SetName("Alice");          // owner only
-//   data.SetReady(true);            // owner only
-//   data.PlayerNumber.Value         // read anywhere
-//   data.PlayerName.Value           // read anywhere
-//   data.IsReady.Value              // read anywhere
-//   data.OnReadyChanged += ...      // subscribe for UI updates
-//
-// Save player name to PlayerPrefs so it persists across sessions:
-//   PlayerPrefs.SetString("PlayerName", "Alice");
-// ============================================================
-
 using System;
 using Unity.Collections;
 using Unity.Netcode;

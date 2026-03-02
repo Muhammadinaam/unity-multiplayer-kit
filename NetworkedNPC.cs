@@ -1,28 +1,3 @@
-// ============================================================
-// NetworkedNPC  –  Base class for server-controlled NPCs
-// ============================================================
-// SETUP
-//   1. Subclass this and override GetMoveDirection().
-//   2. Add NetworkObject + NetworkTransform (Server authority)
-//      to the NPC prefab.
-//   3. All AI logic runs only on the server.
-//      NetworkTransform replicates the result to all clients.
-//
-// EXAMPLE
-//   public class PatrolEnemy : NetworkedNPC
-//   {
-//       [SerializeField] private Transform[] waypoints;
-//       private int index;
-//
-//       protected override Vector3 GetMoveDirection()
-//       {
-//           Vector3 dir = waypoints[index].position - transform.position;
-//           if (dir.magnitude < 0.2f) index = (index + 1) % waypoints.Length;
-//           return dir.normalized;
-//       }
-//   }
-// ============================================================
-
 using Unity.Netcode;
 using UnityEngine;
 

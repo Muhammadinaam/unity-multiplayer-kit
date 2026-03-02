@@ -1,30 +1,3 @@
-// ============================================================
-// LANManager  –  Local network (WiFi / LAN) play
-// ============================================================
-// No Unity Services. No internet. No costs.
-// Works on the same WiFi network (home, LAN party, office).
-//
-// HOW IT WORKS
-//   Host  – Starts NGO host + broadcasts "I am here" UDP packets every second.
-//   Client – Listens for broadcasts, fires OnHostDiscovered with the host's IP.
-//           Call ConnectToHost(ip) to join, or ConnectByIP(ip) if you already
-//           know the host's IP (typed in manually).
-//
-// SETUP
-//   Add to the same GameObject as NetworkManager.
-//   Keep default ports unless something conflicts on your network.
-//
-// USAGE  (host side)
-//   LANManager.Instance.StartLANHost();
-//   Debug.Log("My IP: " + LANManager.Instance.LocalIP);  // show in UI
-//
-// USAGE  (client side)
-//   LANManager.Instance.OnHostDiscovered += ip => ConnectToHost(ip);
-//   LANManager.Instance.StartDiscovery();
-//   // OR skip discovery and connect directly:
-//   LANManager.Instance.ConnectByIP("192.168.1.42");
-// ============================================================
-
 using System;
 using System.Collections.Concurrent;
 using System.Net;

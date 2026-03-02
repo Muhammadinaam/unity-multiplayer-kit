@@ -1,19 +1,3 @@
-// ============================================================
-// GameNetworkManager  –  Player spawning + scene management
-// ============================================================
-// SETUP
-//   1. Add to the same GameObject as NetworkManager
-//      (replaces MyNetworkManager.cs).
-//   2. Assign spawn points in the Inspector (as many as you need).
-//   3. Add your player prefab to NetworkManager's Network Prefabs list.
-//      The prefab MUST have a PlayerData component on it.
-//   4. Enable "Scene Management" in the NetworkManager component.
-//
-// USAGE  (server / host only)
-//   GameNetworkManager.Instance.LoadScene("GameScene");
-//   GameNetworkManager.Instance.ReturnToLobby("LobbyScene");
-// ============================================================
-
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;

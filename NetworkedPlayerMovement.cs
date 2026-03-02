@@ -1,28 +1,3 @@
-// ============================================================
-// NetworkedPlayerMovement  –  Generic server-auth movement
-//                             with naive client prediction
-// ============================================================
-// SETUP
-//   Add to any Player prefab alongside:
-//     - NetworkObject
-//     - NetworkTransform  (set authority to Server)
-//     - PlayerData        (optional – not required)
-//
-// INSPECTOR
-//   Move Speed          – units per second
-//   Movement Mode       – pick the axis layout for your game
-//   Input Send Threshold– min axis delta before sending an RPC
-//                         (reduces bandwidth, keep at ~0.01)
-//
-// HOW PREDICTION WORKS
-//   Owner applies movement locally the same frame input is read
-//   (zero perceived latency). The server also moves authoritatively
-//   and NetworkTransform pushes corrections back; NGO's built-in
-//   interpolation smooths any tiny drift invisibly.
-//   Hosts (IsServer + IsOwner) skip prediction since they have
-//   no network latency.
-// ============================================================
-
 using Unity.Netcode;
 using UnityEngine;
 

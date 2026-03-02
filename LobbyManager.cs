@@ -1,22 +1,3 @@
-// ============================================================
-// LobbyManager  –  Unity Lobby + Relay wrapper
-// ============================================================
-// SETUP
-//   1. Install packages: com.unity.services.lobby  com.unity.services.relay
-//   2. Enable Lobby + Relay in the Unity Dashboard (project settings).
-//   3. Add this component to your persistent scene object (e.g. NetworkManager GO).
-//   4. Make sure UnityTransport is on the same GO as NetworkManager.
-//
-// USAGE
-//   await LobbyManager.Instance.InitializeAsync();          // call once on app start
-//   await LobbyManager.Instance.CreateLobbyAsync(false);   // public  match -> host
-//   await LobbyManager.Instance.CreateLobbyAsync(true);    // private match -> host
-//   LobbyManager.Instance.LobbyCode                        // share this code for private
-//   await LobbyManager.Instance.QuickJoinAsync();           // join any public lobby
-//   await LobbyManager.Instance.JoinByCodeAsync(code);     // join private lobby
-//   LobbyManager.Instance.LeaveLobby();
-// ============================================================
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -144,11 +125,11 @@ public class LobbyManager : MonoBehaviour
 
     private void SetRelayHost(Allocation a) =>
         NetworkManager.Singleton.GetComponent<UnityTransport>()
-            .SetRelayServerData(new RelayServerData(a, "dtls"));
+            .SetRelayServerData(AllocationUtils.ToRelayServerData(a, "dtls"));
 
     private void SetRelayClient(JoinAllocation j) =>
         NetworkManager.Singleton.GetComponent<UnityTransport>()
-            .SetRelayServerData(new RelayServerData(j, "dtls"));
+            .SetRelayServerData(AllocationUtils.ToRelayServerData(j, "dtls"));
 
     private void StopHeartbeat()
     {
