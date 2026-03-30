@@ -1,18 +1,31 @@
 using System;
-using UnityEngine;
+using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using Unity.Netcode;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using UnityEngine;
 
 public class GameServiceManager : MonoBehaviour
 {
+    public static string PendingErrorMessage;
+    public static event Action<string> OnErrorRequested;
 
-    [SerializeField] private GameObject noConnectionPanel;
-    
+    public static GameServiceManager Instance {get; private set;}
     private string mainmenuScene = "MainMenu";
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private void Awake()
+    {
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     private async void Start()
     {
         await RunBootSequenceAsync();
@@ -20,9 +33,9 @@ public class GameServiceManager : MonoBehaviour
 
     private async Task RunBootSequenceAsync()
     {
-        if(Application.internetReachability == NetworkReachability.NotReachable)
+        if (!HasInternetConnection())
         {
-            ShowError("No Network Connection");
+            ShowError("No network connection.");
             return;
         }
 
@@ -33,22 +46,67 @@ public class GameServiceManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            ShowError("Failed to initialize services");
+            ShowError("Failed to initialize online services.");
             return;
         }
 
+        StartCoroutine(MonitorConnectionAsync());
         SceneManager.LoadScene(mainmenuScene);
+    }
+
+    private IEnumerator MonitorConnectionAsync()
+    {
+        var wait = new WaitForSeconds(10f);
+        while(true)
+        {
+            yield return wait;
+            if (!HasInternetConnection())
+            {
+                HandleConnectionLost();
+                yield break;
+            }
+        }
+    }
+
+    public void HandleConnectionLost()
+    {
+        StopAllCoroutines();
+
+        if(LobbyManager.Instance != null && LobbyManager.Instance.CurrentLobby != null)
+        {
+            LobbyManager.Instance.LeaveLobby();
+        }
+
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+        ShowError("Lost connection to server.");
+        SceneManager.LoadScene("Login");
     }
 
     public async void OnRetryButtonClicked()
     {
-        noConnectionPanel.SetActive(false);
+        PendingErrorMessage = null;
         await RunBootSequenceAsync();
+    }
+
+    public bool EnsureOnlineOrShowError(string offlineMessage = "No network connection.")
+    {
+        if (HasInternetConnection()) return true;
+        ShowError(offlineMessage);
+        return false;
+    }
+
+    public bool HasInternetConnection()
+    {
+        return Application.internetReachability != NetworkReachability.NotReachable;
     }
 
     private void ShowError(string message)
     {
         Debug.LogWarning($"[GameServiceManager] {message}");
-        noConnectionPanel.SetActive(true);
+        PendingErrorMessage = message;
+        OnErrorRequested?.Invoke(message);
     }
 }
